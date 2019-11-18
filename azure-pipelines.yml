@@ -1,0 +1,22 @@
+trigger:
+- '*'
+
+stages:
+- stage: 'StageA'
+  jobs: 
+  - job: 'JobA'
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - script: echo Hello, world!
+
+- stage: 'StageB'
+  dependsOn: StageA
+  condition: and(succeeded(), eq(variables['schemaChanged'], 'True'))
+  jobs: 
+  - job: 'JobB'
+    pool:
+      vmImage: 'ubuntu-16.04'
+    steps:
+    - script: echo Hello, world!
+
